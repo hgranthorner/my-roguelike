@@ -1,9 +1,10 @@
 import * as ROT from 'rot-js'
 import { IScreen } from '../@types'
+import { ScreenName } from '../Models'
 
 export abstract class ScreenBase implements IScreen {
-  protected readonly screenName: string
-  protected constructor(_screenName: string) {
+  readonly screenName: ScreenName
+  protected constructor(_screenName: ScreenName) {
     this.screenName = _screenName
   }
 

@@ -3,46 +3,47 @@ import { IMap } from '../@types'
 import { floorTile, nullTile, Tile, wallTile } from '../Tile/Tile'
 
 export class Map implements IMap {
-  private readonly width: number = 80
-  private readonly height: number = 24
-  private readonly tiles: [Tile[]]
+  private readonly _width: number
+  private readonly _height: number
+  private readonly _tiles: [Tile[]]
 
-  constructor(_tiles: [Tile[]]) {
-    this.tiles = _tiles
-    this.generateMap()
+  constructor(tiles: [Tile[]], width: number, height: number) {
+    this._tiles = tiles
+    this._width = width
+    this._height = height
   }
 
-  getWidth = () => this.width
-  getHeight = () => this.height
+  getWidth = () => this._width
+  getHeight = () => this._height
   getTile = (x: number, y: number) => {
-    if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
+    if (x < 0 || x >= this._width || y < 0 || y >= this._height) {
       return nullTile()
     } else {
-      return this.tiles[x][y] || nullTile()
+      return this._tiles[x][y] || nullTile()
     }
   }
 
   generateMap = () => {
     // generate empty arrays and null tiles
-    for (let x = 0; x < 80; x++) {
+    for (let x = 0; x < this._width; x++) {
 
       // ignore first row, as tiles are initialized with an array already
       if (x > 0)
-        this.tiles.push([])
-      for (let y = 0; y < 24; y++) {
-        this.tiles[x].push(nullTile())
+        this._tiles.push([])
+      for (let y = 0; y < this._height; y++) {
+        this._tiles[x].push(nullTile())
       }
     }
 
-    const generator = new ROT.Map.Cellular(80, 24)
+    const generator = new ROT.Map.Cellular(this._width, this._height)
     generator.randomize(.5)
     generator.create((x, y, v) => {
       if (v === 1) {
-        this.tiles[x][y] = floorTile()
+        this._tiles[x][y] = floorTile()
       } else {
-        this.tiles[x][y] = wallTile()
+        this._tiles[x][y] = wallTile()
       }
     })
-    console.log(this.tiles)
+    console.log(this._tiles)
   }
 }

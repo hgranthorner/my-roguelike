@@ -1,10 +1,11 @@
 import * as ROT from 'rot-js'
 import { ScreenBase } from './ScreenBase'
 import { IScreen } from '../@types'
+import { ScreenName } from '../Models'
 
 export default class StartScreen extends ScreenBase implements IScreen {
   constructor() {
-    super('start')
+    super(ScreenName.StartScreen)
   }
 
   render = (display: ROT.Display) => {

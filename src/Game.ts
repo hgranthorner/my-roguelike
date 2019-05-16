@@ -1,74 +1,57 @@
 import * as ROT from 'rot-js'
 import { IGame, IScreen, IScreens } from './@types'
 import { LoseScreen, PlayScreen, StartScreen, WinScreen } from './Screens'
-import { InputType, Key } from './Models'
-
+import { InputType } from './Models'
+import { HEIGHT, WIDTH } from './Globals'
+import { InputHandler } from './InputHandler'
 
 export class Game implements IGame {
-  private display: ROT.Display = new ROT.Display({ width: 80, height: 20 })
+  private _display: ROT.Display = new ROT.Display({ width: WIDTH, height: HEIGHT })
+  private _inputHandler: InputHandler
 
-  screens: IScreens = {
-    loseScreen: new LoseScreen,
-    winScreen: new WinScreen,
-    startScreen: new StartScreen,
-    playScreen: new PlayScreen
+  private _screens: IScreens
+
+  private _currentScreen: IScreen
+
+  constructor() {
+    this._screens = {
+      loseScreen: new LoseScreen,
+      winScreen: new WinScreen,
+      startScreen: new StartScreen,
+      playScreen: new PlayScreen
+    }
+    this._currentScreen = this._screens.startScreen
+    this._inputHandler = new InputHandler(this._screens.playScreen)
   }
 
-  private currentScreen: IScreen = this.screens.startScreen
-
   init = () => {
-    this.display = new ROT.Display({ width: 80, height: 20 })
-    const bindEventToGame = (inputType: InputType) => {
+    this._display = new ROT.Display({ width: WIDTH, height: HEIGHT })
+    const bindEventToHandler = (inputType: InputType) => {
       window.addEventListener(inputType, (evt: KeyboardEvent) => {
-        if (this.currentScreen !== null) {
-          this.handleInput(inputType, evt)
+        if (this._currentScreen !== null) {
+          const newScreen = this._inputHandler.handleInput(this._currentScreen.screenName, inputType, evt)
+          if (newScreen)
+            this.switchScreen(this._screens[newScreen])
         }
       })
     }
-    bindEventToGame(InputType.KeyDown)
-    bindEventToGame(InputType.KeyUp)
-    bindEventToGame(InputType.KeyPress)
+    bindEventToHandler(InputType.KeyDown)
+    bindEventToHandler(InputType.KeyUp)
+    bindEventToHandler(InputType.KeyPress)
   }
 
-  getDisplay = () => this.display
+  getDisplay = () => this._display
+
+  loadStartScreen = () => {
+    this.switchScreen(this._screens.startScreen)
+  }
 
   switchScreen = (screen: IScreen) => {
-    this.currentScreen.exit()
+    this._currentScreen.exit()
     this.getDisplay().clear()
-    this.currentScreen = this.currentScreen.switchScreen(screen)
-    this.currentScreen.enter()
-    console.log('now rendering the next screen')
-    this.currentScreen.render(this.getDisplay())
-  }
-
-  handleInput = (inputType: InputType, evt: KeyboardEvent) => {
-    if (inputType === InputType.KeyDown && evt.key === Key.Enter) {
-      switch (this.currentScreen) {
-        case (this.screens.startScreen):
-          this.switchScreen(this.screens.playScreen)
-          break
-        case (this.screens.loseScreen):
-          this.switchScreen(this.screens.startScreen)
-          break
-        case (this.screens.winScreen):
-          this.switchScreen(this.screens.startScreen)
-          break
-        case (this.screens.playScreen):
-          this.switchScreen(this.screens.winScreen)
-          break
-        default:
-          break
-      }
-  } else if (inputType === InputType.KeyDown && evt.key === Key.Esc) {
-      switch (this.currentScreen) {
-        case (this.screens.playScreen):
-          this.switchScreen(this.screens.loseScreen)
-          break
-        default:
-          this.currentScreen
-          break
-      }
-    }
+    this._currentScreen = this._currentScreen.switchScreen(screen)
+    this._currentScreen.enter()
+    this._currentScreen.render(this.getDisplay())
   }
 }
 

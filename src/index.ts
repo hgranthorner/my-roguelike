@@ -7,6 +7,6 @@ window.onload = () => {
   const display = game.getDisplay().getContainer()
   if (display) {
     document.body.appendChild(display)
-    game.switchScreen(game.screens.startScreen)
+    game.loadStartScreen()
   }
 }
