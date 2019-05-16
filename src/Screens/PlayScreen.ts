@@ -8,12 +8,20 @@ export default class PlayScreen extends ScreenBase implements IScreen {
 
   constructor() {
     super('play')
-    this.map.generateMap()
+    console.log('entering play screen')
   }
 
   render = (display: ROT.Display) => {
-    display.drawText(3, 5, '%c{red}%b{white}This game is so much fun!')
-    display.drawText(4, 6, 'Press [Enter] to win, or [Esc] to lose!')
+    for (let x = 0; x < this.map.getWidth(); x++) {
+      for (let y = 0; y < this.map.getHeight(); y++) {
+        console.log(this.map)
+        const glyph = this.map.getTile(x, y).getGlyph()
+        display.draw(x, y,
+          glyph.getChar(),
+          glyph.getForeground(),
+          glyph.getBackground())
+      }
+    }
   }
 }
 

@@ -36,29 +36,37 @@ export class Game implements IGame {
     this.currentScreen.exit()
     this.getDisplay().clear()
     this.currentScreen = this.currentScreen.switchScreen(screen)
-    this.currentScreen.render(this.display)
+    this.currentScreen.enter()
+    console.log('now rendering the next screen')
+    this.currentScreen.render(this.getDisplay())
   }
 
   handleInput = (inputType: InputType, evt: KeyboardEvent) => {
     if (inputType === InputType.KeyDown && evt.key === Key.Enter) {
       switch (this.currentScreen) {
         case (this.screens.startScreen):
-          return this.switchScreen(this.screens.playScreen)
+          this.switchScreen(this.screens.playScreen)
+          break
         case (this.screens.loseScreen):
-          return this.switchScreen(this.screens.startScreen)
+          this.switchScreen(this.screens.startScreen)
+          break
         case (this.screens.winScreen):
-          return this.switchScreen(this.screens.startScreen)
+          this.switchScreen(this.screens.startScreen)
+          break
         case (this.screens.playScreen):
-          return this.switchScreen(this.screens.winScreen)
+          this.switchScreen(this.screens.winScreen)
+          break
         default:
-          return this.currentScreen
+          break
       }
   } else if (inputType === InputType.KeyDown && evt.key === Key.Esc) {
       switch (this.currentScreen) {
         case (this.screens.playScreen):
-          return this.switchScreen(this.screens.loseScreen)
+          this.switchScreen(this.screens.loseScreen)
+          break
         default:
-          return this.currentScreen
+          this.currentScreen
+          break
       }
     }
   }

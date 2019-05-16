@@ -5,7 +5,6 @@ export abstract class ScreenBase implements IScreen {
   protected readonly screenName: string
   protected constructor(_screenName: string) {
     this.screenName = _screenName
-    this.enter()
   }
 
   enter = () => {
