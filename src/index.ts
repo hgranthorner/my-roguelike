@@ -1,11 +1,12 @@
-interface Hello {
-  happy: boolean
-  words: string
-}
+import { Game } from './Game'
 
-const hello: Hello = {
-  happy: true,
-  words: 'hello world'
-}
+const game = new Game
 
-console.log(`I am ${hello.happy}, so I will say "${hello.words}"`)
+window.onload = () => {
+  game.init()
+  const display = game.getDisplay().getContainer()
+  if (display) {
+    document.body.appendChild(display)
+    game.switchScreen(game.screens.startScreen)
+  }
+}

@@ -6,7 +6,8 @@
   "scripts": {
     "tsc-watch": "node_modules/.bin/tsc -w",
     "webpack": "node_modules/.bin/webpack",
-    "webpack-watch": "node_modules/.bin/webpack -w"
+    "webpack-watch": "node_modules/.bin/webpack -w --display=minimal",
+    "watch": "npm run tsc-watch & npm run webpack-watch"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +16,7 @@
     "rot-js": "^2.0.3"
   },
   "devDependencies": {
+    "inline-source-map": "^0.6.2",
     "typescript": "^3.4.5",
     "webpack": "^4.31.0",
     "webpack-cli": "^3.3.2"
