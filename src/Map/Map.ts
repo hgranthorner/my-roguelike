@@ -2,9 +2,11 @@ import * as ROT from 'rot-js'
 import { GetEntityAt, ICoordinates, IMap } from '../@types'
 import { floorTile, nullTile, Tile, wallTile } from '../Tile/Tile'
 import { EntityManager } from './Helpers'
-import { MovingActor } from '../Entity/Entities'
-import { PlayerTemplate } from '../Entity/Templates'
+import { StationaryActor } from '../Entity/Entities'
+import { FungusTemplate, PlayerTemplate } from '../Entity/Templates'
 import { engine, scheduler } from './Helpers/Engine'
+// import { Player } from '../Entity/Entities'
+import { MyPlayer } from '../Entity/Entities/MyPlayer'
 
 export class Map implements IMap {
   private readonly _width: number
@@ -14,7 +16,7 @@ export class Map implements IMap {
   private readonly _engine = engine
   private readonly _entityManager: EntityManager = new EntityManager
 
-  player: MovingActor
+  player: MyPlayer
 
   constructor(tiles: [Tile[]], width: number, height: number) {
     this._tiles = tiles
@@ -22,8 +24,12 @@ export class Map implements IMap {
     this._height = height
 
     this.generateMap()
-    this._entityManager.addEntityAtRandomPosition(new MovingActor(PlayerTemplate), this)
-    this.player = this.getEntities()[0] as MovingActor
+    this._entityManager.addEntityAtRandomPosition(new MyPlayer(PlayerTemplate), this)
+    this.player = this.getEntities()[0] as MyPlayer
+
+    for (let i = 0; i < 100; i++) {
+      this._entityManager.addEntityAtRandomPosition(new StationaryActor(FungusTemplate), this)
+    }
   }
 
   getWidth = () => this._width
@@ -69,7 +75,7 @@ export class Map implements IMap {
     do {
       x = Math.floor(Math.random() * this._width)
       y = Math.floor(Math.random() * this._height)
-    } while (!this.getTile(x, y).isFloor)
+    } while (!this.isEmptyFloor(x, y))
 
     const coords: ICoordinates = { x, y, success: true }
     return coords
@@ -79,6 +85,10 @@ export class Map implements IMap {
   dig = (x: number, y: number) => {
     if (this.getTile(x, y).isDiggable())
       this._tiles[x][y] = floorTile()
+  }
+
+  isEmptyFloor = (x: number, y: number) => {
+    return this.getTile(x, y).isFloor && !this.getEntityAt(x, y)
   }
 
   getEngine = () => this._engine
