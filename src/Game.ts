@@ -26,14 +26,16 @@ export class Game implements IGame {
   init = () => {
     // Generate display with the correct screen size
     this._display = new ROT.Display({ width: SCREEN_WIDTH, height: SCREEN_HEIGHT })
+
+    // bind keypresses to screen
     const bindEventToHandler = (inputType: InputType) => {
       window.addEventListener(inputType, (evt: KeyboardEvent) => {
         if (this._currentScreen !== null) {
           const newScreen = this._inputHandler.handleInput(this._currentScreen.screenName, inputType, evt)
           if (newScreen)
             this.switchScreen(this._screens[newScreen])
-          this._display.clear()
-          this._currentScreen.render(this._display)
+
+          this.refresh()
         }
       })
     }
@@ -53,7 +55,15 @@ export class Game implements IGame {
     this.getDisplay().clear()
     this._currentScreen = this._currentScreen.switchScreen(screen)
     this._currentScreen.enter()
-    this._currentScreen.render(this.getDisplay())
+    this.refresh()
+  }
+
+  refresh = () => {
+    this._display.clear()
+    this.renderScreen()
+  }
+
+  renderScreen = () => {
+    this._currentScreen.render(this._display)
   }
 }
-

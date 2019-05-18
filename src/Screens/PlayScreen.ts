@@ -4,11 +4,11 @@ import { ScreenBase } from './ScreenBase'
 import { Map } from '../Map/Map'
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../Globals'
 import { ScreenName } from '../Models'
-import { Player, PlayerTemplate } from '../Entity'
+import { MovingActor, PlayerTemplate } from '../Entity'
 
 export default class PlayScreen extends ScreenBase implements IScreen {
   private readonly _map: IMap = new Map([[]], 100, 100)
-  private _player: Player = new Player(PlayerTemplate)
+  private _player: MovingActor = new MovingActor(PlayerTemplate)
 
   constructor() {
     super(ScreenName.PlayScreen)

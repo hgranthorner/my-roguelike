@@ -1,11 +1,15 @@
 import * as ROT from 'rot-js'
-import { ICoordinates, IMap } from '../@types'
+import { GetEntityAt, ICoordinates, IMap } from '../@types'
 import { floorTile, nullTile, Tile, wallTile } from '../Tile/Tile'
+import { Entity } from '../Entity'
 
 export class Map implements IMap {
   private readonly _width: number
   private readonly _height: number
   private readonly _tiles: [Tile[]]
+  private readonly _scheduler = new ROT.Scheduler.Simple()
+  private readonly _engine = new ROT.Engine(this._scheduler)
+  private _entities: Entity[] = []
 
   constructor(tiles: [Tile[]], width: number, height: number) {
     this._tiles = tiles
@@ -66,5 +70,17 @@ export class Map implements IMap {
   dig = (x: number, y: number) => {
     if (this.getTile(x, y).isDiggable())
       this._tiles[x][y] = floorTile()
+  }
+
+  getEngine = () => this._engine
+
+  getEntities = () => this._entities
+
+  getEntityAt: GetEntityAt = (x: number, y: number) => {
+    for (let entity of this._entities) {
+      if (entity.x === x && entity.y === y)
+        return entity
+    }
+    return null
   }
 }
