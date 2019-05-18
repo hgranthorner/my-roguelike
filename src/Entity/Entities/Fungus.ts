@@ -3,11 +3,12 @@ import { IEntityProperties } from '../../@types'
 import { Destructible } from '../Helpers/Destructible'
 import { Actor } from '../Helpers'
 import { FungusTemplate } from '../Templates'
+import { messageHandler } from '../../MessageHandler'
 
 export class Fungus extends Entity {
   private _growthsRemaining: number = 5
   readonly actor: Actor = new Actor
-  readonly defenses: Destructible = new Destructible(3)
+  readonly defenses: Destructible = new Destructible(Math.ceil(Math.random() * 3))
 
   constructor(props: IEntityProperties) {
     super(props)
@@ -15,7 +16,11 @@ export class Fungus extends Entity {
 
   takeDamage = (damage: number) => {
     const newHP = this.defenses.takeDamage(damage)
-    console.log(`This fungus took damage ${damage}. Now has ${newHP} hp.`)
+    if (newHP) {
+      messageHandler.addMessage(`This fungus took damage ${damage}. Now has ${newHP} hp.`)
+    } else {
+      messageHandler.addMessage(`The fungus was destroyed!`)
+    }
     if (newHP <= 0 && this.map) {
       this.map.removeEntity(this)
     }
@@ -34,7 +39,8 @@ export class Fungus extends Entity {
         if (xOffset != 0 || yOffset != 0) {
           // Check if we can actually spawn at that location, and if so
           // then we grow!
-          console.log('Trying to grow')
+          console.log(`Trying to grow at ${this.x + xOffset} ${this.y + yOffset}`)
+          console.log(`Can grow? ${this.map!.isEmptyFloor(this.x + xOffset,this.y + yOffset)}`)
           if (this.map!.isEmptyFloor(this.x + xOffset,
             this.y + yOffset)) {
             const entity = new Entity(FungusTemplate)

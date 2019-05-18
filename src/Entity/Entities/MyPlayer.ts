@@ -38,6 +38,17 @@ export class MyPlayer extends Entity {
     }
   }
 
+  dig = () => {
+    if (this.map) {
+      const { x, y } = this
+      this.map!.dig(x + 1, y)
+      this.map!.dig(x - 1, y)
+      this.map!.dig(x, y + 1)
+      this.map!.dig(x, y - 1)
+      this.map!.getEngine().unlock()
+    }
+  }
+
   act = () => {
     return this.actor.act()
   }

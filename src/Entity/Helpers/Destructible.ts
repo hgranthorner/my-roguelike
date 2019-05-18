@@ -9,4 +9,6 @@ export class Destructible {
     this._hp -= damage
     return this._hp
   }
+
+  getHp = () => this._hp
 }

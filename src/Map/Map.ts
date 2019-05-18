@@ -27,7 +27,7 @@ export class Map implements IMap {
     this._entityManager.addEntityAtRandomPosition(new MyPlayer(PlayerTemplate), this)
     this.player = this.getEntities()[0] as MyPlayer
 
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 500; i++) {
       this._entityManager.addEntityAtRandomPosition(new Fungus(FungusTemplate), this)
     }
   }

@@ -9,9 +9,9 @@ export class Mover {
       return { x, y , success: false, target }
     } else if (tile.isWalkable()) {
       return { x, y, success: true }
-    } else if (tile.isDiggable()) {
-      map.dig(x, y)
-      return { x, y, success: true }
+    // } else if (tile.isDiggable()) {
+    //   map.dig(x, y)
+    //   return { x, y, success: true }
     }
 
     return { x, y, success: false }

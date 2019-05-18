@@ -3,10 +3,10 @@ import { PlayScreen } from './Screens'
 import { Maybe } from './@types'
 
 export class InputHandler {
-  private readonly _screenMover: PlayScreen
+  private readonly _screen: PlayScreen
 
   constructor(playScreen: PlayScreen) {
-    this._screenMover = playScreen
+    this._screen = playScreen
   }
 
   handleInput = (currentScreenName: string, inputType: InputType, evt: KeyboardEvent): Maybe<string> => {
@@ -44,24 +44,30 @@ export class InputHandler {
       else if (evt.key === Key.Up || evt.key === Key.Right || evt.key === Key.Down || evt.key === Key.Left) {
         switch (evt.key) {
           case (Key.Up):
-            this._screenMover.moveScreen(0, -1)
+            this._screen.moveScreen(0, -1)
             return null
           case (Key.Right):
-            this._screenMover.moveScreen(1, 0)
+            this._screen.moveScreen(1, 0)
             return null
           case (Key.Down):
-            this._screenMover.moveScreen(0, 1)
+            this._screen.moveScreen(0, 1)
             return null
           case (Key.Left):
-            this._screenMover.moveScreen(-1, 0)
+            this._screen.moveScreen(-1, 0)
             return null
           default:
             return null
         }
       }
 
+      // "d" logic
+      else if (evt.key === Key.d) {
+        this._screen.getMap().player.dig()
+        return null
+      }
       // Default case
-      else {
+      else
+      {
         return null
       }
     } else {

@@ -51,6 +51,9 @@ export default class PlayScreen extends ScreenBase implements IScreen {
         )
       }
     }
+
+    const stats = `%c(white)%b(black)HP:${this._map.player.defenses.getHp()}|ATT:${this._map.player.attacker.attackPower}`
+    display.drawText(1, screenHeight, stats)
   }
 
   moveScreen = (dX: number, dY: number) => {
@@ -60,9 +63,7 @@ export default class PlayScreen extends ScreenBase implements IScreen {
     this._map.getEngine().unlock()
   }
 
-  generateLevel = () => {
-
-  }
+  getMap = () => this._map
 }
 
 

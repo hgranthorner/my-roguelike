@@ -4,5 +4,6 @@ export enum Key {
   Left = 'ArrowLeft',
   Right = 'ArrowRight',
   Up = 'ArrowUp',
-  Down = 'ArrowDown'
+  Down = 'ArrowDown',
+  d = 'd'
 }

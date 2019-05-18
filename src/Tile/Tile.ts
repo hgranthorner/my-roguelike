@@ -15,7 +15,6 @@ export class Tile {
     this._glyph = new Glyph(properties)
     this._props = properties || {} as ITileProperties
     this._isDiggable = defaultTrue(this._props.isDiggable)
-
     this._isWalkable = defaultTrue(this._props.isWalkable)
     this.isFloor = defaultFalse(this._props.isFloor)
     this.isWall = defaultFalse(this._props.isWall)

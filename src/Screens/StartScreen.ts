@@ -9,7 +9,7 @@ export default class StartScreen extends ScreenBase implements IScreen {
   }
 
   render = (display: ROT.Display) => {
-    display.drawText(1, 1, `%c{yellow}Typescript Roguelike`)
+    display.drawText(1, 1, `%c{yellow}The Fungal Rumble`)
     display.drawText(1, 2, 'Press [Enter] to start!')
   }
 }

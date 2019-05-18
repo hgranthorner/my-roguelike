@@ -5,4 +5,5 @@ export interface ITileProperties extends IGlyphProperties {
   isDiggable?: boolean
   isFloor?: boolean
   isWall?: boolean
+  blocksLight?: boolean
 }
