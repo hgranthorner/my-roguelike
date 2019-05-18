@@ -4,14 +4,12 @@ import { game } from '../../Game'
 export class Actor {
   act = () => {
     game.refresh()
-    // engine.lock()
     // @ts-ignore
     let done: any
-    const promise = {
+    return {
       then: (cb: any) => {
         done = cb
       }
     }
-    return promise
   }
 }

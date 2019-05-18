@@ -2,11 +2,11 @@ import * as ROT from 'rot-js'
 import { GetEntityAt, ICoordinates, IMap } from '../@types'
 import { floorTile, nullTile, Tile, wallTile } from '../Tile/Tile'
 import { EntityManager } from './Helpers'
-import { StationaryActor } from '../Entity/Entities'
+import { Fungus } from '../Entity/Entities'
 import { FungusTemplate, PlayerTemplate } from '../Entity/Templates'
 import { engine, scheduler } from './Helpers/Engine'
-// import { Player } from '../Entity/Entities'
 import { MyPlayer } from '../Entity/Entities/MyPlayer'
+import { Entity } from '../Entity'
 
 export class Map implements IMap {
   private readonly _width: number
@@ -28,7 +28,7 @@ export class Map implements IMap {
     this.player = this.getEntities()[0] as MyPlayer
 
     for (let i = 0; i < 100; i++) {
-      this._entityManager.addEntityAtRandomPosition(new StationaryActor(FungusTemplate), this)
+      this._entityManager.addEntityAtRandomPosition(new Fungus(FungusTemplate), this)
     }
   }
 
@@ -93,11 +93,19 @@ export class Map implements IMap {
 
   getEngine = () => this._engine
 
+  addEntity = <T extends Entity>(entity: T) => {
+    this._entityManager.addEntity(entity, this)
+  }
+
   getEntities = () => this._entityManager.getEntities()
 
   getScheduler = () => this._scheduler
 
   getEntityAt: GetEntityAt = (x: number, y: number) => {
     return this._entityManager.getEntityAt(x, y)
+  }
+
+  removeEntity = <T extends Entity>(entity: T) => {
+    this._entityManager.removeEntity(entity)
   }
 }

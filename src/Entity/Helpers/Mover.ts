@@ -3,10 +3,10 @@ import { IMap } from '../../@types'
 export class Mover {
   tryMove = (x: number, y: number, map: IMap) => {
     const tile = map.getTile(x, y)
-    const entity = map.getEntityAt(x, y)
+    const target = map.getEntityAt(x, y)
 
-    if (entity) {
-      return { x, y , success: false }
+    if (target) {
+      return { x, y , success: false, target }
     } else if (tile.isWalkable()) {
       return { x, y, success: true }
     } else if (tile.isDiggable()) {

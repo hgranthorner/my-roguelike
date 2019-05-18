@@ -1,5 +1,6 @@
 import { Entity } from '../../Entity'
 import { GetEntityAt, IMap } from '../../@types'
+import { scheduler } from './Engine'
 
 export class EntityManager {
   private readonly _entities: Entity[]
@@ -41,4 +42,16 @@ export class EntityManager {
   }
 
   getEntities = () => this._entities
+
+  removeEntity = <T extends Entity>(entity: T) => {
+    for (let i = 0; i < this._entities.length; i++) {
+      if (this._entities[i] === entity) {
+        this._entities.splice(i, 1)
+        break
+      }
+    }
+    if (entity.actor) {
+      scheduler.remove(entity)
+    }
+  }
 }

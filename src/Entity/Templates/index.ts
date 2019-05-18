@@ -1,2 +1,2 @@
 export * from './Fungus'
-export * from './Player'
+export * from './PlayerTemplate'
