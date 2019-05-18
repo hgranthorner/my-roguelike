@@ -2,15 +2,14 @@ import * as ROT from 'rot-js'
 import { IGame, IScreen, IScreens } from './@types'
 import { LoseScreen, PlayScreen, StartScreen, WinScreen } from './Screens'
 import { InputType } from './Models'
-import { HEIGHT, WIDTH } from './Globals'
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from './Globals'
 import { InputHandler } from './InputHandler'
 
 export class Game implements IGame {
-  private _display: ROT.Display = new ROT.Display({ width: WIDTH, height: HEIGHT })
+  private readonly _screens: IScreens
+
+  private _display: ROT.Display = new ROT.Display({ width: SCREEN_WIDTH, height: SCREEN_HEIGHT })
   private _inputHandler: InputHandler
-
-  private _screens: IScreens
-
   private _currentScreen: IScreen
 
   constructor() {
@@ -25,19 +24,22 @@ export class Game implements IGame {
   }
 
   init = () => {
-    this._display = new ROT.Display({ width: WIDTH, height: HEIGHT })
+    // Generate display with the correct screen size
+    this._display = new ROT.Display({ width: SCREEN_WIDTH, height: SCREEN_HEIGHT })
     const bindEventToHandler = (inputType: InputType) => {
       window.addEventListener(inputType, (evt: KeyboardEvent) => {
         if (this._currentScreen !== null) {
           const newScreen = this._inputHandler.handleInput(this._currentScreen.screenName, inputType, evt)
           if (newScreen)
             this.switchScreen(this._screens[newScreen])
+          this._display.clear()
+          this._currentScreen.render(this._display)
         }
       })
     }
     bindEventToHandler(InputType.KeyDown)
-    bindEventToHandler(InputType.KeyUp)
-    bindEventToHandler(InputType.KeyPress)
+    // bindEventToHandler(InputType.KeyUp)
+    // bindEventToHandler(InputType.KeyPress)
   }
 
   getDisplay = () => this._display

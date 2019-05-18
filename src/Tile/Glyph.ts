@@ -1,21 +1,38 @@
-import { IGlyph } from '../@types'
+import { IGlyph, IGlyphProperties } from '../@types'
+
+const defaultProperties = {
+  character: ' ',
+  foreground: 'white',
+  background: 'black'
+}
 
 export class Glyph implements IGlyph {
-  private readonly char: string = ' '
-  private readonly foreground: string = 'white'
-  private readonly background: string = 'black'
+  private readonly _char: string = ' '
+  private readonly _foreground: string = 'white'
+  private readonly _background: string = 'black'
+  private _properties: IGlyphProperties
 
-  constructor(_char?: string, _foreground?: string, _background?: string) {
-    if (_char)
-      this.char = _char
-    if (_foreground)
-      this.foreground = _foreground
-    if (_background)
-      this.background = _background
+  constructor(properties?: IGlyphProperties) {
+    this._properties = properties || {} as IGlyphProperties
+    this._char = this._properties.character || defaultProperties.character
+    this._foreground = this._properties.foreground || defaultProperties.foreground
+    this._background = this._properties.background || defaultProperties.background
   }
 
-  getChar = () => this.char
-  getForeground = () => this.foreground
-  getBackground = () => this.background
+  getChar = () => this._char
+  getForeground = () => this._foreground
+  getBackground = () => this._background
 }
+
+// interface AnyObj { [key: string]: any };
+// type SetDefault = <T extends AnyObj>(obj: AnyObj, def: T) => T & AnyObj;
+// const setDefault: SetDefault = (obj, def) => {
+//   return Object.keys(def).reduce<typeof def>((acc, key: string) => {
+//     return {
+//       ...acc,
+//       [key]: obj[key],
+//     };
+//   }, def);
+// }
+
 

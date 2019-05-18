@@ -23,6 +23,10 @@ export class Map implements IMap {
     }
   }
 
+  isInitialized = () => {
+    return this._tiles[0].length > 0
+  }
+
   generateMap = () => {
     // generate empty arrays and null tiles
     for (let x = 0; x < this._width; x++) {
@@ -44,6 +48,5 @@ export class Map implements IMap {
         this._tiles[x][y] = wallTile()
       }
     })
-    console.log(this._tiles)
   }
 }

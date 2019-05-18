@@ -5,4 +5,5 @@ export interface IMap {
   getHeight: () => number
   getTile: (x: number, y:number) => Tile
   generateMap: () => void
+  isInitialized: () => boolean
 }

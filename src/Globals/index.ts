@@ -1,2 +1,2 @@
-export const WIDTH = 80
-export const HEIGHT = 24
+export const SCREEN_WIDTH = 80
+export const SCREEN_HEIGHT = 24
