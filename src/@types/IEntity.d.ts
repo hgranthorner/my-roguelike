@@ -7,7 +7,7 @@ export interface IEntity {
 }
 
 export interface IEntityProperties extends IGlyphProperties {
-  name: string
-  x: number
-  y: number
+  name?: string
+  x?: number
+  y?: number
 }

@@ -1,5 +1,5 @@
 import * as ROT from 'rot-js'
-import { IMap } from '../@types'
+import { ICoordinates, IMap } from '../@types'
 import { floorTile, nullTile, Tile, wallTile } from '../Tile/Tile'
 
 export class Map implements IMap {
@@ -48,5 +48,16 @@ export class Map implements IMap {
         this._tiles[x][y] = wallTile()
       }
     })
+  }
+
+  getRandomFloorPosition = () => {
+    let x, y: number
+    do {
+      x = Math.floor(Math.random() * this._width)
+      y = Math.floor(Math.random() * this._height)
+    } while (this.getTile(x, y) != floorTile())
+
+    const coords: ICoordinates = { x, y }
+    return coords
   }
 }

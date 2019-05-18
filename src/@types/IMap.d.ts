@@ -1,4 +1,5 @@
 import { Tile } from '../Tile/Tile'
+import { ICoordinates } from './utils'
 
 export interface IMap {
   getWidth: () => number
@@ -6,4 +7,5 @@ export interface IMap {
   getTile: (x: number, y:number) => Tile
   generateMap: () => void
   isInitialized: () => boolean
+  getRandomFloorPosition: () => ICoordinates
 }
