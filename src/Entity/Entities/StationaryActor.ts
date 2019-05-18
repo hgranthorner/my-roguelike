@@ -1,6 +1,6 @@
 import { Entity } from '../Entity'
 import { Actor } from '../Helpers'
-import { IEntityProperties, IMap } from '../../@types'
+import { IEntityProperties } from '../../@types'
 
 export class StationaryActor extends Entity {
   private readonly _actor = new Actor
@@ -9,7 +9,7 @@ export class StationaryActor extends Entity {
     super(props)
   }
 
-  act = (map: IMap) => {
-    this._actor.act(map)
+  act = () => {
+    this._actor.act()
   }
 }

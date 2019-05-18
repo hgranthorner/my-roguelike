@@ -32,16 +32,15 @@ export class Game implements IGame {
       window.addEventListener(inputType, (evt: KeyboardEvent) => {
         if (this._currentScreen !== null) {
           const newScreen = this._inputHandler.handleInput(this._currentScreen.screenName, inputType, evt)
-          if (newScreen)
+          if (newScreen) {
             this.switchScreen(this._screens[newScreen])
-
-          this.refresh()
+            this.refresh()
+          }
         }
       })
     }
+
     bindEventToHandler(InputType.KeyDown)
-    // bindEventToHandler(InputType.KeyUp)
-    // bindEventToHandler(InputType.KeyPress)
   }
 
   getDisplay = () => this._display
@@ -66,4 +65,10 @@ export class Game implements IGame {
   renderScreen = () => {
     this._currentScreen.render(this._display)
   }
+}
+
+export const game = new Game
+
+export const refreshScreen = () => {
+  game.refresh()
 }

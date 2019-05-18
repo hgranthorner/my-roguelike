@@ -4,40 +4,26 @@ import { ScreenBase } from './ScreenBase'
 import { Map } from '../Map/Map'
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../Globals'
 import { ScreenName } from '../Models'
-import { MovingActor, PlayerTemplate } from '../Entity'
 
 export default class PlayScreen extends ScreenBase implements IScreen {
-  private readonly _map: IMap = new Map([[]], 100, 100)
-  private _player: MovingActor = new MovingActor(PlayerTemplate)
+  private readonly _map: IMap
 
   constructor() {
     super(ScreenName.PlayScreen)
+    this._map = new Map([[]], 100, 100)
     console.log('entering play screen')
+    console.log(this._map.player.x, this._map.player.y)
   }
 
   render = (display: ROT.Display) => {
-
-    // Generate and render map if needed
-    if (!this._map.isInitialized()) {
-      this._map.generateMap()
-    }
-
-    // Generate player if needed
-    if (this._player.isInitialized === false) {
-      const pos = this._map.getRandomFloorPosition()
-      this._player.x = pos.x
-      this._player.y = pos.y
-      this._player.isInitialized = true
-    }
-
     // Set map to screen
     const screenWidth = SCREEN_WIDTH
     const screenHeight = SCREEN_HEIGHT
 
     // Get the max of 0 and current pos - half the width (to always at least show the whole screen)
     // Then get the minimum of that number and the
-    const topLeftX = Math.min(Math.max(0, this._player.x - (screenWidth / 2)), this._map.getWidth() - screenWidth)
-    const topLeftY = Math.min(Math.max(0, this._player.y - (screenHeight / 2)), this._map.getHeight() - screenHeight)
+    const topLeftX = Math.min(Math.max(0, this._map.player.x - (screenWidth / 2)), this._map.getWidth() - screenWidth)
+    const topLeftY = Math.min(Math.max(0, this._map.player.y - (screenHeight / 2)), this._map.getHeight() - screenHeight)
 
     for (let x = topLeftX; x < topLeftX + screenWidth; x++) {
       for (let y = topLeftY; y < topLeftY + screenHeight; y++) {
@@ -51,20 +37,27 @@ export default class PlayScreen extends ScreenBase implements IScreen {
       }
     }
 
-    // Render the character
-    display.draw(
-      this._player.x - topLeftX,
-      this._player.y - topLeftY,
-      this._player.getChar(),
-      this._player.getForeground(),
-      this._player.getBackground())
-
+    // Render the entities
+    for (let entity of this._map.getEntities()) {
+      if (entity.x >= topLeftX && entity.y >= topLeftY &&
+        entity.x < topLeftX + screenWidth &&
+        entity.y < topLeftY + screenHeight) {
+        display.draw(
+          entity.x - topLeftX,
+          entity.y - topLeftY,
+          entity.getChar(),
+          entity.getForeground(),
+          entity.getBackground()
+        )
+      }
+    }
   }
 
   moveScreen = (dX: number, dY: number) => {
-    const newX = this._player.x + dX
-    const newY = this._player.y + dY
-    this._player.tryMove(newX, newY, this._map)
+    const newX = this._map.player.x + dX
+    const newY = this._map.player.y + dY
+    this._map.player.tryMove(newX, newY, this._map)
+    this._map.getEngine().unlock()
   }
 
   generateLevel = () => {

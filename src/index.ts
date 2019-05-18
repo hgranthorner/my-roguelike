@@ -1,6 +1,5 @@
-import { Game } from './Game'
+import { game } from './Game'
 
-const game = new Game
 
 window.onload = () => {
   game.init()

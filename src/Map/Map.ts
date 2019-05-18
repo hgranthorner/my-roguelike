@@ -1,20 +1,29 @@
 import * as ROT from 'rot-js'
 import { GetEntityAt, ICoordinates, IMap } from '../@types'
 import { floorTile, nullTile, Tile, wallTile } from '../Tile/Tile'
-import { Entity } from '../Entity'
+import { EntityManager } from './Helpers'
+import { MovingActor } from '../Entity/Entities'
+import { PlayerTemplate } from '../Entity/Templates'
+import { engine, scheduler } from './Helpers/Engine'
 
 export class Map implements IMap {
   private readonly _width: number
   private readonly _height: number
   private readonly _tiles: [Tile[]]
-  private readonly _scheduler = new ROT.Scheduler.Simple()
-  private readonly _engine = new ROT.Engine(this._scheduler)
-  private _entities: Entity[] = []
+  private readonly _scheduler = scheduler
+  private readonly _engine = engine
+  private readonly _entityManager: EntityManager = new EntityManager
+
+  player: MovingActor
 
   constructor(tiles: [Tile[]], width: number, height: number) {
     this._tiles = tiles
     this._width = width
     this._height = height
+
+    this.generateMap()
+    this._entityManager.addEntityAtRandomPosition(new MovingActor(PlayerTemplate), this)
+    this.player = this.getEntities()[0] as MovingActor
   }
 
   getWidth = () => this._width
@@ -60,12 +69,12 @@ export class Map implements IMap {
     do {
       x = Math.floor(Math.random() * this._width)
       y = Math.floor(Math.random() * this._height)
-      console.log(`x: ${x} y: ${y}`)
     } while (!this.getTile(x, y).isFloor)
 
-    const coords: ICoordinates = { x, y }
+    const coords: ICoordinates = { x, y, success: true }
     return coords
   }
+
 
   dig = (x: number, y: number) => {
     if (this.getTile(x, y).isDiggable())
@@ -74,13 +83,11 @@ export class Map implements IMap {
 
   getEngine = () => this._engine
 
-  getEntities = () => this._entities
+  getEntities = () => this._entityManager.getEntities()
+
+  getScheduler = () => this._scheduler
 
   getEntityAt: GetEntityAt = (x: number, y: number) => {
-    for (let entity of this._entities) {
-      if (entity.x === x && entity.y === y)
-        return entity
-    }
-    return null
+    return this._entityManager.getEntityAt(x, y)
   }
 }

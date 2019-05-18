@@ -1,7 +1,17 @@
-import { IMap } from '../../@types'
+import { game } from '../../Game'
+// import { engine } from '../../Map/Helpers/Engine'
 
 export class Actor {
-  act = (map: IMap) => {
-    map.getEngine().lock()
+  act = () => {
+    game.refresh()
+    // engine.lock()
+    // @ts-ignore
+    let done: any
+    const promise = {
+      then: (cb: any) => {
+        done = cb
+      }
+    }
+    return promise
   }
 }

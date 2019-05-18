@@ -1,12 +1,14 @@
 import * as ROT from 'rot-js'
 import { Tile } from '../Tile/Tile'
 import { ICoordinates } from './utils'
-import { Entity } from '../Entity'
+import { Entity, MovingActor, StationaryActor } from '../Entity'
 import { Maybe } from './index'
+import Scheduler from 'rot-js/lib/scheduler/scheduler'
 
 type GetEntityAt = (x: number, y: number) => Maybe<Entity>
 
 export interface IMap {
+  player: MovingActor
   getWidth: () => number
   getHeight: () => number
   getTile: (x: number, y: number) => Tile
@@ -17,4 +19,5 @@ export interface IMap {
   getEngine: () => ROT.Engine
   getEntities: () => Entity[]
   getEntityAt: GetEntityAt
+  getScheduler: () => Scheduler
 }

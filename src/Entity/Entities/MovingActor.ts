@@ -3,13 +3,11 @@ import { IEntityProperties, IMap } from '../../@types'
 import { Actor, Mover } from '../Helpers'
 
 export class MovingActor extends Entity {
-  private readonly _actor: Actor = new Actor
   private readonly _mover: Mover = new Mover
+  readonly actor: Actor = new Actor
 
   constructor(props: IEntityProperties) {
     super(props)
-    console.log(props)
-    console.log(this.isInitialized)
   }
 
   tryMove = (x: number, y: number, map: IMap) => {
@@ -21,8 +19,8 @@ export class MovingActor extends Entity {
     }
   }
 
-  act = (map: IMap) => {
-    this._actor.act(map)
+  act = () => {
+    return this.actor.act()
   }
 }
 

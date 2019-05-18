@@ -25,3 +25,7 @@ export class Entity extends Glyph {
     else return false
   }
 }
+
+export class EntityDescendant extends Entity {
+
+}
