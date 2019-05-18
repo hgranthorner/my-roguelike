@@ -1,6 +1,6 @@
 import { IGlyph, IGlyphProperties } from '../@types'
 
-const defaultProperties = {
+export const glyphDefaultProperties = {
   character: ' ',
   foreground: 'white',
   background: 'black'
@@ -14,9 +14,9 @@ export class Glyph implements IGlyph {
 
   constructor(properties?: IGlyphProperties) {
     this._properties = properties || {} as IGlyphProperties
-    this._char = this._properties.character || defaultProperties.character
-    this._foreground = this._properties.foreground || defaultProperties.foreground
-    this._background = this._properties.background || defaultProperties.background
+    this._char = this._properties.character || glyphDefaultProperties.character
+    this._foreground = this._properties.foreground || glyphDefaultProperties.foreground
+    this._background = this._properties.background || glyphDefaultProperties.background
   }
 
   getChar = () => this._char

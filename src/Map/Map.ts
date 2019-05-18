@@ -15,6 +15,7 @@ export class Map implements IMap {
 
   getWidth = () => this._width
   getHeight = () => this._height
+
   getTile = (x: number, y: number) => {
     if (x < 0 || x >= this._width || y < 0 || y >= this._height) {
       return nullTile()
@@ -55,9 +56,15 @@ export class Map implements IMap {
     do {
       x = Math.floor(Math.random() * this._width)
       y = Math.floor(Math.random() * this._height)
-    } while (this.getTile(x, y) != floorTile())
+      console.log(`x: ${x} y: ${y}`)
+    } while (!this.getTile(x, y).isFloor)
 
     const coords: ICoordinates = { x, y }
     return coords
+  }
+
+  dig = (x: number, y: number) => {
+    if (this.getTile(x, y).isDiggable())
+      this._tiles[x][y] = floorTile()
   }
 }
